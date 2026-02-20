@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>The Super Bowl's $655M Blind Spot</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { color-scheme: light; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #fafaf8;
+    color: #1a1a1a;
+  }
+
+  /* ── Page layout ─────────────────────────────────────────────── */
+  .article-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 52px 24px 80px;
+  }
+
+  /* ── Header ──────────────────────────────────────────────────── */
+  .eyebrow {
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #aaa;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: clamp(1.7rem, 5.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    margin-bottom: 18px;
+  }
+
+  .standfirst {
+    font-size: clamp(0.95rem, 2.3vw, 1.12rem);
+    color: #444;
+    font-style: italic;
+    line-height: 1.65;
+    border-left: 3px solid #1a1a1a;
+    padding-left: 16px;
+    margin-bottom: 24px;
+  }
+
+  .byline {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin-bottom: 6px;
+  }
+
+  .dateline {
+    font-size: 0.7rem;
+    color: #bbb;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #e0d9d0;
+  }
+
+  /* ── Body ────────────────────────────────────────────────────── */
+  p {
+    font-size: clamp(0.93rem, 2vw, 1.05rem);
+    line-height: 1.8;
+    margin-bottom: 22px;
+    color: #222;
+  }
+
+  h2 {
+    font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 44px 0 14px;
+    letter-spacing: -0.2px;
+  }
+
+  strong { font-weight: 700; color: #1a1a1a; }
+  em     { font-style: italic; }
+
+  ol {
+    margin: 0 0 22px 0;
+    padding-left: 28px;
+  }
+  ol li {
+    font-size: clamp(0.93rem, 2vw, 1.05rem);
+    line-height: 1.75;
+    margin-bottom: 6px;
+    color: #222;
+  }
+
+  ul {
+    margin: 0 0 22px 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  ul li {
+    font-size: clamp(0.93rem, 2vw, 1.05rem);
+    line-height: 1.75;
+    margin-bottom: 10px;
+    color: #222;
+    padding-left: 24px;
+    position: relative;
+  }
+  ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #bbb;
+  }
+
+  /* ── Pull quote ──────────────────────────────────────────────── */
+  .pull-quote {
+    border-top: 2px solid #1a1a1a;
+    border-bottom: 1px solid #e0d9d0;
+    padding: 22px 0 20px;
+    margin: 36px 0;
+  }
+  .pull-quote p {
+    font-size: clamp(1.05rem, 2.8vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1.4;
+    color: #1a1a1a;
+    margin-bottom: 0;
+    font-style: italic;
+  }
+
+  /* ── Viz blocks ──────────────────────────────────────────────── */
+  .viz-block {
+    margin: 40px -24px 36px;
+    border-top: 1px solid #e0d9d0;
+    border-bottom: 1px solid #e0d9d0;
+    background: #fafaf8;
+  }
+
+  .viz-block iframe {
+    display: block;
+    width: 100%;
+    border: none;
+    transition: height 0.3s ease;
+  }
+
+  /* generous initial heights so SVGs render at full size before postMessage fires */
+  #viz-explainer { height: 920px;  }
+  #viz-shift     { height: 520px;  }
+  #viz-demo      { height: 980px; }
+
+  /* ── Dividers / closing ──────────────────────────────────────── */
+  .section-rule {
+    border: none;
+    border-top: 1px solid #e0d9d0;
+    margin: 44px 0;
+  }
+
+  .closing-note {
+    background: #f1ede6;
+    border-left: 3px solid #1a1a1a;
+    padding: 16px 20px;
+    margin-top: 40px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: #333;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  @media (max-width: 560px) {
+    .viz-block { margin: 32px -24px; }
+  }
+</style>
+</head>
+<body>
+<article class="article-wrap">
+
+  <div class="eyebrow">Economics &amp; Media · Consumer Surplus Series</div>
+
+  <h1>The Super Bowl's $655M Blind Spot</h1>
+
+  <p class="standfirst">America's most-watched live event is mostly under a paywall in 2026 — despite being legally free on public airwaves. What a blanket, a cold night, and an Economics textbook revealed about a market failure hiding in plain sight.</p>
+
+  <div class="byline">Analysis</div>
+  <div class="dateline">February 2026</div>
+
+  <p>On Super Bowl Sunday, my wife and I decided to stay home and watch the game under a cosy blanket, rather than brave howling winds, 3° weather, and a 3-train commute to watch it at a friend's house. I'm emphatically not an avid football fan — we were only watching out of guilt for ghosting — so for me, the logistics of watching the Super Bowl live have always been handled by someone else. So it shocked us to learn this year that you actually <em>cannot</em> just turn on the TV and watch the Super Bowl live unless:</p>
+
+  <ol>
+    <li>You have a paid cable subscription with a sports package</li>
+    <li>You have a paid streaming service, OR</li>
+    <li>You have a TV antenna</li>
+  </ol>
+
+  <h2>The Paradox</h2>
+
+  <p>The fact that the live broadcast is legally (and technically) free means that the effective cost of watching the big game in the US <em>should be</em> <strong>$0</strong>. The only real access barrier is having an antenna. Yet various estimates place the share of homes in the US with antennas at approximately <strong>22.75 million</strong> — about 18–20% of all households. Most homes rely on cable subscriptions or paid streaming services.</p>
+
+  <p>To clarify what this friction really means: <strong>the most-watched live event in the United States is mostly under a paywall in 2026, despite all major broadcasters being legally mandated to provide it for free on public airwaves.</strong> A paradox like this seemed curiously apt as a real-life illustration of abstract theoretical Economics concepts. This certainly looked like the distinct kind of market failure Economists refer to as the loss of <em>Consumer Surplus</em>.</p>
+
+  <h2>Consumer Surplus — What It Is and Why You Should Care</h2>
+
+  <p>Canonically, Economics describes Consumer Surplus as the difference between what you'd be willing to pay for something and what you actually paid. It's an abstraction meant to describe the intangible value — or welfare — we derive from having gained access to something we truly wanted and were, in Economics terms, "willing to pay for."</p>
+
+  <p>There are a few problems with the way this theoretical construct fits into the real world. For one thing, it's much harder to quantify for services such as live sports broadcasts than for a finite, indivisible product unaffected by the free-ridership problem. And in my case, not having to pay for access at all would mean 100% Consumer Surplus — because otherwise, I wouldn't have cared to watch the event anyway.</p>
+
+  <p>To speak more broadly, consumer surplus in the case of the Super Bowl can be evaluated in terms of its cultural significance in American life. The construct itself needs revisiting in a real world where one may not be able to access the free live broadcast, but still gets "value" from watching highlights after the game — and more importantly, the ads, which have become more significant than the gameplay itself. It is difficult to frame the exact boundaries of consumer surplus using a traditional Economics framework in a world where market fragmentation, complexity, and temporal desirability influence human welfare far more than price alone.</p>
+
+  <p>So this article will be purely illustrative, with the assumption that the average person who watches the Super Bowl live does so for the moment-in-time value they derive from seeing the quirky ads for the first time they air, and having this cultural touchpoint to share with friends and on social media. This is qualitatively a different "product" than watching the replays a day later.</p>
+
+  <h2>Visualizing Consumer Surplus</h2>
+
+  <p>Below is a walkthrough of how economists construct the framework of Consumer Surplus using the demand curve. What determines the size of consumer surplus overall is price. I track price here as an access barrier to live viewing from the first year the Super Bowl aired (1967) to this year. I constructed an "effective price" by looking at the evolution of this tollgate over the decades. Before cable, the effective price was zero — access to the live broadcast was simply a matter of turning the TV on. As cable became more ubiquitous, and later streaming, the effective price gradually increased from $0. By 2010, the average effective price of accessing the Super Bowl live had increased to $15. By 2026, it evaluates to around $65.</p>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       VIZ 1 — EXPLAINER + INTERACTIVE TIMELINE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="viz-block">
+    <iframe id="viz-explainer" src="explainer.html"
+      title="Consumer Surplus Explainer — 1967 to 2026"
+      scrolling="no"></iframe>
+  </div>
+
+  <p>Some surprising insights show up in this framework. The obvious one is the extent of the erosion of consumer surplus from 1967 to 2026. In 1967, all households that wanted to watch live could watch live — but by 2026, at the effective price of $65, 45% of the market is locked out. More surprisingly, this has implications on the producer side. In a world where the total addressable market has access, broadcasters capture 100% of ad revenue from those eyeballs. But in a world where almost half of that addressable market is excluded, there is a significant deadweight loss.</p>
+
+  <p>From a potential pool of 228 million viewers, only 125.6 million got to watch the ads live. For the 103 million people who could not watch live, the opportunity for advertisers to reach them in that pivotal moment is lost. The assumptions are these: the implied viewership pool is 125.6 million — the actual number of people who watched live. With an effective price at $65, just 55% of the total potential addressable market had access to the live game. Total ad spend in 2026 stands at $800 million, giving us a full-access ad spend base of approximately $1.45 billion ($800M ÷ 0.55). The lost ad revenue represented by the 45% of people who could not be reached during the live event evaluates to $1.454B × 0.45 = <strong>~$655M</strong>.</p>
+
+  <div class="pull-quote">
+    <p>"This value quantifies the deadweight loss to the population locked out from live viewing — value that nobody captures, that simply ceases to exist."</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       VIZ 2 — AD REVENUE SHIFT 1967–2026
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="viz-block">
+    <iframe id="viz-shift" src="ad_revenue_shift.html"
+      title="How Super Bowl Ad Revenue Split Changed: 1967–2026"
+      scrolling="no"></iframe>
+  </div>
+
+  <h2>Who Loses the Most From This Paradigm?</h2>
+
+  <p>Consumers lose in terms of the temporal value of being in the moment and participating in the conversation about the event contemporaneously with other live viewers — and the most impacted demographic is the one that advertisers traditionally place a premium on: young, digitally engaged consumers primed to build brand loyalty. Gen Z is particularly impacted, as they have the lowest rates of access due to not having cable or paid subscriptions that grant access to live sports. But recent survey data shows that interest in watching live actually grew 24% year-over-year within the last decade, indicating that the binding constraint to viewing is waning access rather than waning interest.</p>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       VIZ 3 — DEMOGRAPHIC DIVIDE
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="viz-block">
+    <iframe id="viz-demo" src="demographic_divide.html"
+      title="The Demographic Divide — Gen Z and the Double Barrier"
+      scrolling="no"></iframe>
+  </div>
+
+  <p>In tangible financial terms, advertisers appear to be the worst impacted by this market paradigm. Advertisers paid on average <strong>$8 million</strong> to reach 125.6 million live viewers this year, evaluating to a cost per thousand (CPM) of roughly <strong>$6,369</strong>. If the full total addressable audience of 228 million were able to watch, the same ad spend would have yielded a CPM of $3,503. <strong>Access barriers actually inflate effective CPM by 82%</strong> — advertisers are overpaying for every impression while negating the opportunity to capture $655 million more in ad impression value.</p>
+
+  <p>Consumer surplus is intangible because it's difficult to evaluate a feeling — but as this framework shows, this unseen loss has real knock-on effects. More value could be created if viewers who would watch live ads engaged with those brands, generating returns for advertisers. But this value isn't being created due to structural barriers.</p>
+
+  <hr class="section-rule">
+
+  <h2>On the Producer Side: Neither Efficiency Nor Maximum Revenue</h2>
+
+  <p>Advertisers are paying record prices for an artificially restricted audience. In an efficient market, those 103 million locked-out viewers would either:</p>
+
+  <ul>
+    <li><strong>Lower the CPM</strong> — better ROI for advertisers, OR</li>
+    <li><strong>Command higher total ad prices</strong> — more revenue for networks</li>
+  </ul>
+
+  <p>Instead, the current system delivers neither efficiency nor maximum revenue.</p>
+
+  <p>The Super Bowl represents the <em>best</em> case for open access:</p>
+
+  <ul>
+    <li>Content is legally required to be free (FCC mandate)</li>
+    <li>Business model is pure advertising — maximum viewers = maximum revenue</li>
+    <li>Marginal cost of serving one more stream ≈ $0</li>
+    <li>Technology exists to deliver it efficiently</li>
+  </ul>
+
+  <div class="closing-note">
+    If artificial scarcity doesn't make sense <em>here</em>, it doesn't make sense <em>anywhere</em> in the content ecosystem.
+  </div>
+
+</article>
+
+<script>
+// ── Same-origin iframe auto-height ──────────────────────────────────────────
+// Since all files are served from the same GitHub Pages origin, we can:
+// 1. Listen for postMessage height reports from each iframe
+// 2. Fall back to reading contentDocument directly on load
+
+var iframes = {
+  'viz-explainer': document.getElementById('viz-explainer'),
+  'viz-shift':     document.getElementById('viz-shift'),
+  'viz-demo':      document.getElementById('viz-demo')
+};
+
+// Map src filename → iframe id
+var srcToId = {
+  'explainer.html':        'viz-explainer',
+  'ad_revenue_shift.html': 'viz-shift',
+  'demographic_divide.html': 'viz-demo'
+};
+
+function setHeight(iframe, h) {
+  if (h > 100) {
+    iframe.style.height = h + 'px';
+  }
+}
+
+// Method 1: postMessage from viz files
+window.addEventListener('message', function(e) {
+  if (e.data && typeof e.data.iframeHeight === 'number') {
+    // Find which iframe sent this
+    Object.values(iframes).forEach(function(iframe) {
+      try {
+        if (iframe.contentWindow === e.source) {
+          setHeight(iframe, e.data.iframeHeight);
+        }
+      } catch(err) {}
+    });
+  }
+});
+
+// Method 2: Direct read on load (same-origin fallback)
+Object.values(iframes).forEach(function(iframe) {
+  iframe.addEventListener('load', function() {
+    // Try direct read — works because same origin on GitHub Pages
+    try {
+      var doc = iframe.contentDocument || iframe.contentWindow.document;
+      var h = Math.max(
+        doc.body.scrollHeight,
+        doc.body.offsetHeight,
+        doc.documentElement.scrollHeight
+      );
+      setHeight(iframe, h);
+    } catch(err) {
+      // Will be caught by postMessage instead
+    }
+
+    // Re-check after a short delay to catch deferred rendering
+    setTimeout(function() {
+      try {
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+        setHeight(iframe, h);
+      } catch(err) {}
+    }, 800);
+  });
+});
+
+// Method 3: Periodic check for the first 3 seconds after page load
+// Catches the explainer's dynamic scene switching
+window.addEventListener('load', function() {
+  var checks = 0;
+  var interval = setInterval(function() {
+    Object.values(iframes).forEach(function(iframe) {
+      try {
+        var doc = iframe.contentDocument || iframe.contentWindow.document;
+        var h = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+        setHeight(iframe, h);
+      } catch(err) {}
+    });
+    checks++;
+    if (checks > 16) clearInterval(interval);  // poll for ~8 seconds
+  }, 500);
+});
+</script>
+</body>
+</html>

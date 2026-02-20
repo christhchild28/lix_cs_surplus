@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>The Hidden Cost: Super Bowl Ad Revenue Lost to Access Barriers</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #fafaf8;
+    color: #1a1a1a;
+    overflow-x: hidden;
+  }
+
+  /* ── EXPLAINER SCENE ─────────────────────────────── */
+  #scene-explainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 16px 36px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .exp-eyebrow {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #aaa;
+  }
+
+  .exp-title {
+    font-size: clamp(1.2rem, 3.2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+
+  .exp-desc-box {
+    background: #f1ede6;
+    border-left: 3px solid #1a1a1a;
+    padding: 12px 16px;
+    font-size: clamp(0.8rem, 2vw, 0.93rem);
+    color: #333;
+    line-height: 1.65;
+    min-height: 68px;
+    transition: opacity 0.35s ease;
+  }
+
+  /* ── SVG CHART GROUPS ────────────────────────────── */
+  #expSvgWrap { width: 100%; }
+  #expSvgWrap svg { display: block; width: 100%; }
+
+  .chart-group {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .chart-group.vis { opacity: 1; }
+
+  /* ── STEP NAV ────────────────────────────────────── */
+  .exp-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 18px;
+    border: 1.5px solid #1a1a1a;
+    background: #fff;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 20px;
+    font-family: 'Georgia', serif;
+    transition: background 0.15s, color 0.15s, opacity 0.15s;
+    color: #1a1a1a;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .nav-btn:hover:not(:disabled) { background: #f1ede6; }
+  .nav-btn:disabled { opacity: 0.22; cursor: default; }
+
+  .nav-btn.cta {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 8px 22px;
+    font-size: 0.8rem;
+  }
+  .nav-btn.cta:hover { background: #333; }
+
+  .step-dots {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+  }
+  .step-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #d8d3cc;
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+  .step-dot.active {
+    background: #1a1a1a;
+    transform: scale(1.35);
+  }
+
+  /* ── TRANSITION OVERLAY ──────────────────────────── */
+  #t-overlay {
+    position: fixed;
+    inset: 0;
+    background: #fafaf8;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.55s ease;
+  }
+  #t-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .t-eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #bbb;
+  }
+  .t-headline {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 700;
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.3;
+  }
+  .t-sub {
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ═══════════════════════════════════════════════════
+     INTERACTIVE SCENE
+  ═══════════════════════════════════════════════════ */
+  #scene-interactive {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 16px 32px;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #scene-interactive.active { display: flex; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #bbb;
+    cursor: pointer;
+    transition: color 0.15s;
+    align-self: flex-start;
+  }
+  .back-link:hover { color: #555; }
+
+  #scene-interactive h1 {
+    font-size: clamp(1.15rem, 3.2vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .i-subtitle {
+    font-size: clamp(0.78rem, 2vw, 0.95rem);
+    color: #555;
+    font-style: italic;
+    margin-top: -10px;
+  }
+
+  /* controls */
+  .i-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+  .i-slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .i-slider-wrap label {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  #iYearSlider { flex: 1; accent-color: #1a1a1a; }
+  #iYearDisplay { font-size: 1.1rem; font-weight: 700; min-width: 42px; }
+
+  .i-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 16px 6px 12px;
+    border: 1.5px solid #1a1a1a;
+    background: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 20px;
+    font-family: 'Georgia', serif;
+    transition: background 0.15s, color 0.15s;
+    color: #1a1a1a;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .i-play-btn:hover { background: #f1ede6; }
+  .i-play-btn.playing { background: #1a1a1a; color: #fff; }
+  .i-play-btn .i-btn-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* era box */
+  .i-era-box {
+    background: #f1ede6;
+    border-left: 3px solid #1a1a1a;
+    padding: 10px 14px;
+    min-height: 52px;
+  }
+  .i-era-title { font-size: clamp(0.82rem,2.2vw,0.95rem); font-weight: 700; margin-bottom: 3px; }
+  .i-era-text  { font-size: clamp(0.74rem,1.8vw,0.83rem); color: #555; font-style: italic; }
+
+  /* legend */
+  .i-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.78rem;
+    justify-content: center;
+    margin-top: -6px;
+  }
+  .i-legend-item { display: flex; align-items: center; gap: 5px; }
+  .i-legend-swatch { width: 16px; height: 16px; border-radius: 2px; flex-shrink: 0; }
+
+  /* svg */
+  #iSvgWrap { width: 100%; }
+  #iSvgWrap svg { display: block; width: 100%; }
+
+  /* metric cards */
+  .i-metrics {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    border: 1.5px solid #e0d9d0;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: -20px;
+  }
+  .i-metric-card {
+    padding: 8px 8px;
+    text-align: center;
+    background: #fff;
+    border-right: 1px solid #e0d9d0;
+    border-top: 3px solid;
+  }
+  .i-metric-card:last-child { border-right: none; }
+  .i-metric-card.cs  { border-top-color: #3b82f6; }
+  .i-metric-card.view{ border-top-color: #10b981; }
+  .i-metric-card.dwl { border-top-color: #dc2626; }
+  .i-metric-label {
+    font-size: 0.52rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #999;
+    margin-bottom: 3px;
+    font-family: 'Georgia', serif;
+    line-height: 1.3;
+  }
+  .i-metric-value {
+    font-size: clamp(1.1rem,2.8vw,1.4rem);
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+  .i-metric-change { font-size: 0.72rem; margin-top: 4px; font-style: italic; color: #666; }
+
+  .i-source { font-size: 0.72rem; color: #888; }
+
+  /* tooltip */
+  #iTooltip {
+    position: fixed;
+    display: none;
+    pointer-events: none;
+    z-index: 300;
+    max-width: 220px;
+    background: rgba(255,252,248,0.94);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid #d4c9b8;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  #iTooltip.visible { display: block; }
+  .i-tt-accent { height: 4px; width: 100%; }
+  .i-tt-body { padding: 10px 13px 11px; }
+  .i-tt-label { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.07em; color: #888; margin-bottom: 3px; font-family:'Georgia',serif; }
+  .i-tt-value { font-size: 1.45rem; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+  .i-tt-desc  { font-size: 0.72rem; color: #555; font-style: italic; line-height: 1.4; }
+  .i-tt-note  { font-size: 0.62rem; color: #aaa; margin-top: 6px; padding-top: 6px; border-top: 1px solid #e8e0d4; font-style: italic; }
+  .i-tt-dismiss {
+    pointer-events: auto;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: #aaa;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    transition: color 0.1s, background 0.1s;
+  }
+  .i-tt-dismiss:hover { color: #555; background: rgba(0,0,0,0.06); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SCENE 1 — EXPLAINER
+═══════════════════════════════════════════════════ -->
+<div id="scene-explainer">
+  <div>
+    <div class="exp-eyebrow" id="stepTag">Step 1 of 8</div>
+    <h1 class="exp-title" id="stepTitle">A Market for Watching</h1>
+  </div>
+
+  <div class="exp-desc-box" id="stepDesc">
+    Every market has a population of potential buyers — here, viewers. The vertical axis shows price, or willingness to pay. The horizontal axis shows the total pool of potential viewers.
+  </div>
+
+  <div id="expSvgWrap"><svg id="expChart"></svg></div>
+
+  <div class="exp-nav">
+    <button class="nav-btn" id="prevBtn" disabled>← Back</button>
+    <div class="step-dots" id="stepDots"></div>
+    <button class="nav-btn" id="nextBtn">Next →</button>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SCENE 2 — INTERACTIVE
+═══════════════════════════════════════════════════ -->
+<div id="scene-interactive">
+  <span class="back-link" id="backLink">← Back to Introduction</span>
+
+  <h1>The Super Bowl's $655M Blind Spot</h1>
+  <div class="i-subtitle">Access barriers don't just exclude viewers — they destroy ad revenue that nobody captures</div>
+
+  <div class="i-controls">
+    <div class="i-slider-wrap">
+      <label for="iYearSlider">Year:</label>
+      <input type="range" id="iYearSlider" min="1967" max="2026" value="1967">
+      <span id="iYearDisplay">1967</span>
+    </div>
+    <button class="i-play-btn" id="iPlayBtn">
+      <svg class="i-btn-icon" id="iPlayIcon" viewBox="0 0 16 16" fill="currentColor">
+        <polygon points="3,2 13,8 3,14"/>
+      </svg>
+      <span id="iPlayLabel">Play</span>
+    </button>
+  </div>
+
+  <div class="i-era-box">
+    <div class="i-era-title" id="iEraTitle"></div>
+    <div class="i-era-text"  id="iEraText"></div>
+  </div>
+
+  <div class="i-legend">
+    <div class="i-legend-item">
+      <div class="i-legend-swatch" style="background:rgba(59,130,246,0.3);border:2px solid #3b82f6;"></div>
+      <span>Viewer Welfare</span>
+    </div>
+    <div class="i-legend-item">
+      <div class="i-legend-swatch" style="background:rgba(220,38,38,0.3);border:2px solid #dc2626;"></div>
+      <span>Lost Ad Revenue</span>
+    </div>
+    <div class="i-legend-item">
+      <div class="i-legend-swatch" style="background:rgba(245,158,11,0.3);border:2px solid #f59e0b;"></div>
+      <span>Ad Revenue Realized</span>
+    </div>
+  </div>
+
+  <div id="iSvgWrap"><svg id="iChart"></svg></div>
+
+  <div class="i-metrics">
+    <div class="i-metric-card cs">
+      <div class="i-metric-label">Viewer Welfare</div>
+      <div class="i-metric-value" id="iCsValue">High</div>
+      <div class="i-metric-change" id="iCsChange"></div>
+    </div>
+    <div class="i-metric-card view">
+      <div class="i-metric-label">Accessible Viewers</div>
+      <div class="i-metric-value" id="iViewersValue">100%</div>
+      <div class="i-metric-change" id="iViewersChange"></div>
+    </div>
+    <div class="i-metric-card dwl">
+      <div class="i-metric-label">Lost Ad Revenue</div>
+      <div class="i-metric-value" id="iDwlValue">None</div>
+      <div class="i-metric-change" id="iDwlChange"></div>
+    </div>
+  </div>
+
+  <div class="i-source">Note: Effective price represents the marginal cost of accessing the Super Bowl broadcast via cable or streaming bundle. Viewer welfare reflects surplus above that price along a normalized demand curve. Lost ad revenue is estimated from Super Bowl LIX (2026) ad spend (~$800M) scaled to the excluded audience share, implying ~103M locked-out viewers from a potential pool of ~228M. MC ≈ $0 reflects the near-zero marginal cost of broadcasting. Sources: FCC, Nielsen, SNL Kagan, Sports Media Watch, author estimates.</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TRANSITION OVERLAY
+═══════════════════════════════════════════════════ -->
+<div id="t-overlay">
+  <div class="t-eyebrow" id="tEyebrow">Next</div>
+  <div class="t-headline" id="tHeadline">Now let's see how this evolved over 60 years of broadcast history.</div>
+  <div class="t-sub" id="tSub">1967 → 2026</div>
+</div>
+
+
+<!-- TOOLTIP -->
+<div id="iTooltip">
+  <button class="i-tt-dismiss" id="iDismiss" aria-label="Dismiss">✕</button>
+  <div class="i-tt-accent" id="iTtAccent"></div>
+  <div class="i-tt-body">
+    <div class="i-tt-label" id="iTtLabel"></div>
+    <div class="i-tt-value" id="iTtValue"></div>
+    <div class="i-tt-desc"  id="iTtDesc"></div>
+    <div class="i-tt-note">Lost ad revenue estimated from ~$800M Super Bowl LIX (2026) ad spend scaled to excluded audience share. ~103M viewers locked out of a potential pool of ~228M.</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const NS = 'http://www.w3.org/2000/svg';
+
+// ─────────────────────────────────────────────────
+// SVG HELPERS
+// ─────────────────────────────────────────────────
+function mkEl(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function mkTxt(content, x, y, attrs, parent) {
+  const t = mkEl('text',{x,y,...attrs},parent);
+  t.textContent = content;
+  return t;
+}
+function haloTxt(content, x, y, opts, parent) {
+  const t = mkEl('text',{
+    x, y,
+    'text-anchor':       opts.anchor   || 'middle',
+    'dominant-baseline': opts.baseline || 'middle',
+    'font-size':         opts.size     || '11',
+    'font-family':       'Georgia, serif',
+    'font-weight':       opts.weight   || '700',
+    'paint-order':       'stroke',
+    stroke:              'white',
+    'stroke-width':      '4',
+    'stroke-linejoin':   'round',
+    fill:                opts.fill     || '#111'
+  }, parent);
+  t.textContent = content;
+  return t;
+}
+
+
+// ═════════════════════════════════════════════════
+// SCENE 1 — EXPLAINER
+// ═════════════════════════════════════════════════
+
+const STEPS = [
+  {
+    tag:   'Step 1 of 8',
+    title: 'A Market for Watching',
+    desc:  'Every market has a population of potential buyers — here, viewers. The vertical axis shows price, or willingness to pay. The horizontal axis represents the full pool of potential viewers, from most devoted fan to most casual.',
+    show:  []
+  },
+  {
+    tag:   'Step 2 of 8',
+    title: 'The Demand Curve',
+    desc:  'The demand curve slopes downward. At the far left sits a viewer willing to pay $100 — the most devoted fan. Moving right, each successive viewer is willing to pay a little less. At the far right, the final viewer would only watch if the broadcast were completely free.',
+    show:  ['demand']
+  },
+  {
+    tag:   'Step 3 of 8',
+    title: 'Marginal Cost ≈ $0',
+    desc:  'Broadcasting has a remarkable economic property: once the infrastructure exists, each additional viewer costs almost nothing to serve. This MC ≈ $0 line is the social optimum — the point at which every willing viewer can watch without any welfare being destroyed.',
+    show:  ['demand','mc']
+  },
+  {
+    tag:   'Step 4 of 8',
+    title: 'The Effective Price Barrier',
+    desc:  'Cable bundles and streaming subscriptions impose an effective price on access. To watch the Super Bowl, you must pay for a subscription. This dashed red line represents that barrier — set at $65 in the streaming era. Viewers below this line are priced out.',
+    show:  ['demand','mc','price']
+  },
+  {
+    tag:   'Step 5 of 8',
+    title: 'Viewer Welfare',
+    desc:  'Viewers who pay the effective price and tune in capture welfare — the value they receive above and beyond what they paid. This blue triangle represents that surplus. It matters to viewers, but for broadcasters and advertisers, it\'s background noise.',
+    show:  ['demand','mc','price','cs']
+  },
+  {
+    tag:   'Step 6 of 8',
+    title: 'Ad Revenue Realized',
+    desc:  'The yellow rectangle is ad revenue broadcasters actually capture. Advertisers pay ~$8M per 30-second slot to reach this audience. But notice: this rectangle only spans the viewers who can actually access the broadcast. Everything to the right is unreachable.',
+    show:  ['demand','mc','price','cs','lar']
+  },
+  {
+    tag:   'Step 7 of 8',
+    title: 'Lost Ad Revenue',
+    desc:  'The red triangle is ad revenue that simply ceases to exist. These viewers would watch — and advertisers would pay to reach them — but the $65 barrier makes them unreachable. A $8M spot bought a captive live audience. YouTube clips two days later are not the same product.',
+    show:  ['demand','mc','price','cs','lar','dwl']
+  },
+  {
+    tag:   'Step 8 of 8',
+    title: 'The Full Picture',
+    desc:  'In 1967, the yellow rectangle filled the entire chart — every potential viewer was reachable, and the red triangle didn\'t exist. As the effective price rose through the cable and streaming eras, the red triangle grew. Based on $800M in LIX ad spend, an estimated ~$655M evaporates per game — unreachable by the ~103M viewers locked out.',
+    show:  ['demand','mc','price','cs','lar','dwl','labels'],
+    cta:   true
+  }
+];
+
+let currentStep = 0;
+
+// ── Draw explainer chart (fixed example: EP = 65) ──
+function drawExplainer() {
+  const wrap = document.getElementById('expSvgWrap');
+  let totalW = wrap.getBoundingClientRect().width;
+  if (!totalW || totalW < 10) totalW = window.innerWidth - 32;
+  const mobile = totalW < 500;
+  const margin = mobile
+    ? { top:28, right:52, bottom:52, left:40 }
+    : { top:38, right:90, bottom:64, left:58 };
+  const w  = totalW - margin.left - margin.right;
+  const vh = window.innerHeight;
+  const h  = mobile
+    ? Math.round(vh * 0.40) - margin.top - margin.bottom
+    : Math.round(vh * 0.48) - margin.top - margin.bottom;
+
+  const maxPrice = 100, EP = 65, maxQ = w;
+  const qEq = maxQ * (1 - EP / maxPrice);   // 35% of maxQ
+
+  const svg = document.getElementById('expChart');
+  svg.innerHTML = '';
+  const svgH = h + margin.top + margin.bottom;
+  svg.setAttribute('viewBox', `0 0 ${totalW} ${svgH}`);
+  svg.setAttribute('height', svgH);
+
+  function sx(q) { return margin.left + q; }
+  function sy(p) { return margin.top + h - (p / maxPrice) * h; }
+  function clX(v) { return Math.max(margin.left+8, Math.min(margin.left+w-8, v)); }
+  function clY(v) { return Math.max(margin.top+8,  Math.min(margin.top+h-8,  v)); }
+
+  // ── AXES (always on — no class) ──────────────────
+  const gA = mkEl('g', {id:'g-axes'}, svg);
+  mkEl('line', {x1:sx(0),y1:sy(0),x2:sx(maxQ),y2:sy(0),stroke:'#1a1a1a','stroke-width':'1.5'}, gA);
+  mkEl('line', {x1:sx(0),y1:sy(0),x2:sx(0),   y2:sy(maxPrice),stroke:'#1a1a1a','stroke-width':'1.5'}, gA);
+
+  const ticksY = mobile ? 5 : 7;
+  for (let i = 0; i <= ticksY; i++) {
+    const p = (i/ticksY)*maxPrice, yy = sy(p);
+    mkEl('line',{x1:sx(0),y1:yy,x2:sx(0)-5,y2:yy,stroke:'#1a1a1a','stroke-width':'1'}, gA);
+    mkTxt(`$${p.toFixed(0)}`, sx(0)-8, yy,
+      {'text-anchor':'end','dominant-baseline':'middle','font-size':mobile?'8':'10','font-family':'Georgia,serif',fill:'#555'}, gA);
+  }
+  mkEl('line',{x1:sx(maxQ),y1:sy(0),x2:sx(maxQ),y2:sy(0)+8,stroke:'#1a1a1a','stroke-width':'1.5'}, gA);
+  mkTxt('Potential Viewers', sx(maxQ), sy(0)+(mobile?18:20),
+    {'text-anchor':'middle','font-size':mobile?'7.5':'9','font-family':'Georgia,serif',fill:'#555','font-weight':'600'}, gA);
+
+  const yLab = mkEl('text',{
+    x:-(margin.top+h/2), y:mobile?12:16,
+    'text-anchor':'middle','font-size':mobile?'9':'11','font-family':'Georgia,serif',
+    fill:'#333','font-weight':'600',transform:'rotate(-90)'
+  }, gA);
+  yLab.textContent = 'Price / Willingness to Pay ($)';
+
+  // ── LOST AD REVENUE (draws behind CS/DWL) ────────
+  const gLAR = mkEl('g', {id:'g-lar', class:'chart-group'}, svg);
+  mkEl('rect',{
+    x:sx(0), y:sy(EP), width:qEq, height:sy(0)-sy(EP),
+    fill:'#f59e0b','fill-opacity':'0.3',stroke:'#f59e0b','stroke-width':'1.5'
+  }, gLAR);
+
+  // ── CONSUMER SURPLUS ─────────────────────────────
+  const gCS = mkEl('g', {id:'g-cs', class:'chart-group'}, svg);
+  const csPts = [[sx(0),sy(maxPrice)],[sx(qEq),sy(EP)],[sx(0),sy(EP)]]
+    .map(p=>p.join(',')).join(' ');
+  mkEl('polygon',{points:csPts,fill:'#3b82f6','fill-opacity':'0.3',stroke:'#3b82f6','stroke-width':'2','stroke-linejoin':'round'}, gCS);
+
+  // ── DEADWEIGHT LOSS ──────────────────────────────
+  const gDWL = mkEl('g', {id:'g-dwl', class:'chart-group'}, svg);
+  const dwlPts = [[sx(qEq),sy(EP)],[sx(maxQ),sy(0)],[sx(qEq),sy(0)]]
+    .map(p=>p.join(',')).join(' ');
+  mkEl('polygon',{points:dwlPts,fill:'#dc2626','fill-opacity':'0.3',stroke:'#dc2626','stroke-width':'2','stroke-linejoin':'round'}, gDWL);
+
+  // ── MC LINE ──────────────────────────────────────
+  const gMC = mkEl('g', {id:'g-mc', class:'chart-group'}, svg);
+  mkEl('line',{x1:sx(0),y1:sy(0),x2:sx(maxQ),y2:sy(0),stroke:'#10b981','stroke-width':'1.8','stroke-dasharray':'5,4'}, gMC);
+  haloTxt('MC ≈ $0', clX(sx(maxQ*0.18)), clY(sy(0)-10), {fill:'#10b981',size:mobile?'9':'10',baseline:'auto'}, gMC);
+
+  // ── DEMAND CURVE ─────────────────────────────────
+  const gDem = mkEl('g', {id:'g-demand', class:'chart-group'}, svg);
+  mkEl('line',{x1:sx(0),y1:sy(maxPrice),x2:sx(maxQ),y2:sy(0),stroke:'#1a1a1a','stroke-width':'2.5','stroke-linecap':'round'}, gDem);
+  haloTxt('Demand', sx(maxQ)+5, sy(0)-2, {fill:'#1a1a1a',size:mobile?'9':'11',weight:'600',anchor:'start',baseline:'auto'}, gDem);
+
+  // ── EFFECTIVE PRICE LINE ─────────────────────────
+  const gPrice = mkEl('g', {id:'g-price', class:'chart-group'}, svg);
+  mkEl('line',{x1:sx(0),y1:sy(EP),x2:sx(maxQ),y2:sy(EP),stroke:'#dc2626','stroke-width':'1.8','stroke-dasharray':'6,4'}, gPrice);
+  haloTxt(`Effective Price: $${EP}`, clX(sx(maxQ)-4), clY(sy(EP)-9),
+    {anchor:'end',fill:'#dc2626',size:mobile?'8':'10',baseline:'auto'}, gPrice);
+
+  // Actual Viewers marker
+  mkEl('line',{x1:sx(qEq),y1:sy(0),x2:sx(qEq),y2:sy(EP),stroke:'#f59e0b','stroke-width':'1.5','stroke-dasharray':'4,3'}, gPrice);
+  mkEl('line',{x1:sx(qEq),y1:sy(0),x2:sx(qEq),y2:sy(0)+8,stroke:'#b45309','stroke-width':'1.5'}, gPrice);
+  const avLab = mkEl('text',{x:sx(qEq),y:sy(0)+(mobile?14:16),
+    'text-anchor':'middle','font-size':mobile?'7.5':'9','font-family':'Georgia,serif',
+    'font-weight':'700','paint-order':'stroke',stroke:'white','stroke-width':'3','stroke-linejoin':'round',fill:'#b45309'
+  }, gPrice);
+  const ts1=document.createElementNS(NS,'tspan'); ts1.setAttribute('x',sx(qEq)); ts1.setAttribute('dy','0'); ts1.textContent='Actual'; avLab.appendChild(ts1);
+  const ts2=document.createElementNS(NS,'tspan'); ts2.setAttribute('x',sx(qEq)); ts2.setAttribute('dy',mobile?'10':'12'); ts2.textContent='Viewers'; avLab.appendChild(ts2);
+
+  // ── REGION LABELS ─────────────────────────────────
+  const gLab = mkEl('g', {id:'g-labels', class:'chart-group'}, svg);
+  haloTxt('Viewer Welfare',
+    clX((sx(0)+sx(qEq)+sx(0))/3),
+    clY((sy(maxPrice)+sy(EP)+sy(EP))/3),
+    {}, gLab);
+  haloTxt('Ad Revenue Realized',
+    clX(sx(qEq/2)),
+    clY(sy(EP/2)),
+    {}, gLab);
+  haloTxt('Lost Ad Revenue',
+    clX((sx(qEq)+sx(maxQ)+sx(qEq))/3),
+    clY((sy(EP)+sy(0)+sy(0))/3),
+    {}, gLab);
+
+  // Apply current visibility without animation
+  applyStepGroups(currentStep, false);
+}
+
+const GROUP_IDS = ['demand','mc','price','cs','lar','dwl','labels'];
+
+function applyStepGroups(idx, animate) {
+  const show = STEPS[idx].show;
+  GROUP_IDS.forEach(id => {
+    const g = document.getElementById(`g-${id}`);
+    if (!g) return;
+    if (!animate) {
+      g.style.transition = 'none';
+      g.classList.toggle('vis', show.includes(id));
+      requestAnimationFrame(() => { g.style.transition = ''; });
+    } else {
+      g.classList.toggle('vis', show.includes(id));
+    }
+  });
+}
+
+function renderStep(idx) {
+  const s = STEPS[idx];
+  document.getElementById('stepTag').textContent   = s.tag;
+  document.getElementById('stepTitle').textContent = s.title;
+  document.getElementById('stepDesc').textContent  = s.desc;
+
+  document.querySelectorAll('.step-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  document.getElementById('prevBtn').disabled = idx === 0;
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (s.cta) {
+    nextBtn.textContent = 'Explore Further →';
+    nextBtn.classList.add('cta');
+  } else {
+    nextBtn.textContent = 'Next →';
+    nextBtn.classList.remove('cta');
+  }
+
+  applyStepGroups(idx, true);
+}
+
+function buildDots() {
+  const c = document.getElementById('stepDots');
+  c.innerHTML = '';
+  STEPS.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i===0?' active':'');
+    d.addEventListener('click', () => { currentStep=i; renderStep(i); });
+    c.appendChild(d);
+  });
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentStep > 0) { currentStep--; renderStep(currentStep); }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (STEPS[currentStep].cta) {
+    triggerTransition();
+  } else {
+    currentStep++;
+    renderStep(currentStep);
+  }
+});
+
+
+// ─────────────────────────────────────────────────
+// TRANSITION
+// ─────────────────────────────────────────────────
+function setOverlay(eyebrow, headline, sub) {
+  document.getElementById('tEyebrow').textContent  = eyebrow;
+  document.getElementById('tHeadline').textContent = headline;
+  document.getElementById('tSub').textContent      = sub;
+}
+
+function triggerTransition() {
+  setOverlay('Next', 'Now let\'s see how this evolved over 60 years of broadcast history.', '1967 → 2026');
+  const ov = document.getElementById('t-overlay');
+  ov.classList.add('visible');
+
+  setTimeout(() => {
+    document.getElementById('scene-explainer').style.display = 'none';
+    document.getElementById('scene-interactive').classList.add('active');
+    window.scrollTo(0, 0);
+    if (!window._iInited) { window._iInited = true; initInteractive(); }
+
+    setTimeout(() => { ov.classList.remove('visible'); }, 380);
+  }, 950);
+}
+
+document.getElementById('backLink').addEventListener('click', () => {
+  setOverlay('', 'Returning to the introduction.', '');
+  iStopPlay();
+  iHideTt();
+  const ov = document.getElementById('t-overlay');
+  ov.classList.add('visible');
+
+  setTimeout(() => {
+    document.getElementById('scene-interactive').classList.remove('active');
+    const exp = document.getElementById('scene-explainer');
+    exp.style.display = 'flex';
+    window.scrollTo(0, 0);
+    setTimeout(() => { ov.classList.remove('visible'); }, 380);
+  }, 700);
+});
+
+
+// ═════════════════════════════════════════════════
+// SCENE 2 — INTERACTIVE
+// ═════════════════════════════════════════════════
+
+const I_ERAS = [
+  {start:1967,end:1999,title:'Free Antenna Era',            description:'Turn on the TV, watch for free. Zero access barriers. Maximum audience for advertisers — every potential viewer is reachable.',                                               effectivePrice:0,  accessRate:1.0,  eraColor:'#10b981'},
+  {start:2000,end:2009,title:'Cable Dominance Era',          description:'Most households have cable. An antenna still works as fallback. Near-universal reach means advertisers capture almost the full potential audience.',                          effectivePrice:0,  accessRate:0.98, eraColor:'#10b981'},
+  {start:2010,end:2014,title:'Early Cord-Cutting',           description:'Streaming emerges but cable still dominates. Cord-cutters are a small but growing segment — advertisers begin losing reach to younger demographics.',                              effectivePrice:15, accessRate:0.85, eraColor:'#f59e0b'},
+  {start:2015,end:2019,title:'Authentication Barriers Rise', description:'Streaming requires a cable login. Cord-cutters — disproportionately young, high-value audiences — are locked out. Advertisers paying premium CPMs lose exactly the viewers they most want to reach.',                                effectivePrice:45, accessRate:0.65, eraColor:'#f97316'},
+  {start:2020,end:2026,title:'The Streaming Paradox',        description:'Despite abundant streaming options, walled gardens exclude 45% of potential viewers — ~103 million people locked out of a potential audience of ~228M. A $8M Super Bowl spot reaches a structurally truncated audience. Estimated ~$655M in ad revenue destroyed per game — value nobody captures.',                  effectivePrice:65, accessRate:0.55, eraColor:'#dc2626'}
+];
+
+function iGetEra(year) { return I_ERAS.find(e=>year>=e.start&&year<=e.end)||I_ERAS[0]; }
+
+function iGetDims() {
+  const wrap = document.getElementById('iSvgWrap');
+  let totalW = wrap.getBoundingClientRect().width;
+  if (!totalW||totalW<10) totalW = window.innerWidth-32;
+  const mobile = totalW<500;
+  const margin = mobile
+    ? {top:28,right:52,bottom:52,left:40}
+    : {top:38,right:90,bottom:64,left:58};
+  const w  = totalW - margin.left - margin.right;
+  const vh = window.innerHeight;
+  const h  = mobile
+    ? Math.round(vh*0.46)-margin.top-margin.bottom
+    : Math.round(vh*0.55)-margin.top-margin.bottom;
+  return {totalW,w,h,margin,ticksY:mobile?5:7,mobile};
+}
+
+// dollar estimates
+// cs:  welfare geometry — f² × MKTOTAL (blue triangle)
+// dwl: CPM-based — AD_BASE × excluded share (red triangle)
+// lar: CPM-based — AD_BASE × access rate (yellow rectangle)
+// Potential viewer pool = 125.6M actual (LIX) ÷ 0.55 access rate = ~228.4M
+// AD_BASE = $800M LIX actual ÷ 0.55 model access rate ≈ $1.455B full-access baseline
+// Streaming era: dwl = $1.455B × 0.45 ≈ $655M | lar = $1.455B × 0.55 = $800M ✓
+// Uses era.accessRate (not f) for ad figures — f diverges from accessRate in some eras.
+const MKTOTAL = (125.6e6 / 0.55) * 50;  // ~$11.42B welfare pool — blue triangle only
+const AD_BASE = 800e6 / 0.55;           // ~$1.455B: LIX ad revenue scaled to full-access baseline
+function fmtD(v) {
+  if (v>=1e9) return `$${(v/1e9).toFixed(1)}B`;
+  if (v>=1e6) return `$${Math.round(v/1e6)}M`;
+  return `$${Math.round(v).toLocaleString()}`;
+}
+function iEst(era) {
+  const f = era.effectivePrice===0 ? 1 : Math.max(0,1-era.effectivePrice/100);
+  return {
+    cs:  f*f*MKTOTAL,                   // welfare estimate — blue triangle
+    dwl: AD_BASE*(1-era.accessRate),    // CPM-based — red triangle
+    lar: AD_BASE*era.accessRate         // CPM-based — yellow rectangle
+  };
+}
+
+// tooltip
+const iTt=document.getElementById('iTooltip');
+const iTtRegistry = new Map();
+let iTtLingerTimer = null;
+
+function iCancelLinger(){ clearTimeout(iTtLingerTimer); iTtLingerTimer=null; }
+function iHideTt(){ iCancelLinger(); iTt.classList.remove('visible'); }
+
+// dismiss button
+const iDismiss = document.getElementById('iDismiss');
+iDismiss.addEventListener('click', iHideTt);
+iDismiss.addEventListener('touchstart', e=>{ e.stopPropagation(); iHideTt(); }, {passive:true});
+function iLingerHide(){ iCancelLinger(); iTtLingerTimer=setTimeout(()=>{ iTt.classList.remove('visible'); },2000); }
+
+function iPosTt(cx,cy){
+  const tw=iTt.offsetWidth||220,th=iTt.offsetHeight||120,pad=14;
+  let x=cx+16,y=cy-th/2;
+  if(x+tw+pad>window.innerWidth) x=cx-tw-16;
+  if(y<pad) y=pad;
+  if(y+th+pad>window.innerHeight) y=window.innerHeight-th-pad;
+  iTt.style.left=x+'px'; iTt.style.top=y+'px';
+}
+function iPopulate(cfg){
+  document.getElementById('iTtAccent').style.background=cfg.color;
+  document.getElementById('iTtLabel').textContent=cfg.label;
+  document.getElementById('iTtValue').style.color=cfg.color;
+  document.getElementById('iTtValue').textContent=cfg.value;
+  document.getElementById('iTtDesc').textContent=cfg.desc;
+  iTt.classList.add('visible');
+}
+function iShowTt(e,cfg){
+  iCancelLinger();
+  iPopulate(cfg);
+  const cx=e.touches?e.touches[0].clientX:e.clientX;
+  const cy=e.touches?e.touches[0].clientY:e.clientY;
+  iPosTt(cx,cy);
+}
+function iMoveTt(e){
+  const cx=e.touches?e.touches[0].clientX:e.clientX;
+  const cy=e.touches?e.touches[0].clientY:e.clientY;
+  iPosTt(cx,cy);
+}
+function iHandleTouchMove(e){
+  e.preventDefault();
+  const t=e.touches[0];
+  iPosTt(t.clientX,t.clientY);
+  const el=document.elementFromPoint(t.clientX,t.clientY);
+  if(!el) return;
+  let target=el;
+  while(target&&target!==document.body){
+    if(iTtRegistry.has(target)){ iCancelLinger(); iPopulate(iTtRegistry.get(target)); return; }
+    target=target.parentElement;
+  }
+}
+function iAttachTt(shape,cfg){
+  iTtRegistry.set(shape,cfg);
+  shape.style.cursor='pointer';
+  shape.addEventListener('mouseenter',e=>iShowTt(e,cfg));
+  shape.addEventListener('mousemove', e=>iMoveTt(e));
+  shape.addEventListener('mouseleave',iHideTt);
+  shape.addEventListener('touchstart',e=>{ e.preventDefault(); iCancelLinger(); iShowTt(e,cfg); },{passive:false});
+  shape.addEventListener('touchmove', iHandleTouchMove,{passive:false});
+  shape.addEventListener('touchend',  iLingerHide);
+  shape.addEventListener('touchcancel',iHideTt);
+}
+
+function iRender(year) {
+  iTtRegistry.clear();
+  const {totalW,w,h,margin,ticksY,mobile} = iGetDims();
+  const maxPrice=100, maxQ=w;
+  const era=iGetEra(year);
+  const {effectivePrice}=era;
+  const qEq=effectivePrice===0?maxQ:Math.max(0,Math.min(maxQ,maxQ*(1-effectivePrice/maxPrice)));
+  const est=iEst(era);
+
+  const svg=document.getElementById('iChart');
+  svg.innerHTML='';
+  const svgH=h+margin.top+margin.bottom;
+  svg.setAttribute('viewBox',`0 0 ${totalW} ${svgH}`);
+  svg.setAttribute('height',svgH);
+
+  function sx(q){return margin.left+q;}
+  function sy(p){return margin.top+h-(p/maxPrice)*h;}
+  function clX(v){return Math.max(margin.left+8,Math.min(margin.left+w-8,v));}
+  function clY(v){return Math.max(margin.top+8, Math.min(margin.top+h-8, v));}
+
+  // ── Polygons first ────────────────────────────────────────────────────
+  const root=mkEl('g',{},svg);
+  let iPoly, iDwlPoly, iLarRect;
+
+  // CS polygon
+  {
+    const pts=[[sx(0),sy(maxPrice)],[sx(qEq),sy(effectivePrice)],[sx(0),sy(effectivePrice)]].map(p=>p.join(',')).join(' ');
+    iPoly=mkEl('polygon',{points:pts,fill:'#3b82f6','fill-opacity':'0.3',stroke:'#3b82f6','stroke-width':'2','stroke-linejoin':'round'},root);
+    iAttachTt(iPoly,{color:'#3b82f6',label:'Viewer Welfare',value:fmtD(est.cs),desc:"Welfare captured by viewers who can access the broadcast — the gap between their willingness to pay and what they actually paid."});
+  }
+
+  // DWL polygon
+  if(effectivePrice>0&&qEq<maxQ-2){
+    const pts=[[sx(qEq),sy(effectivePrice)],[sx(maxQ),sy(0)],[sx(qEq),sy(0)]].map(p=>p.join(',')).join(' ');
+    iDwlPoly=mkEl('polygon',{points:pts,fill:'#dc2626','fill-opacity':'0.3',stroke:'#dc2626','stroke-width':'2','stroke-linejoin':'round'},root);
+    iAttachTt(iDwlPoly,{color:'#dc2626',label:'Lost Ad Revenue',value:fmtD(est.dwl),desc:"Ad revenue destroyed by access barriers. These viewers would have watched — and been reachable by advertisers — but were priced out. ~103M viewers locked out in the streaming era. Estimated ~$655M per game lost based on $800M LIX ad spend. Nobody captures this value; it simply ceases to exist."});
+  }
+
+  // LAR polygon
+  if(effectivePrice>0&&qEq>2){
+    iLarRect=mkEl('rect',{x:sx(0),y:sy(effectivePrice),width:qEq,height:sy(0)-sy(effectivePrice),fill:'#f59e0b','fill-opacity':'0.3',stroke:'#f59e0b','stroke-width':'1.5'},root);
+    iAttachTt(iLarRect,{color:'#b45309',label:'Ad Revenue Realized',value:fmtD(est.lar),desc:"Ad revenue broadcasters actually capture from the accessible audience. As access barriers grow, this shrinks — advertisers pay $8M per 30-second spot for an audience that keeps getting smaller."});
+
+    // Actual Viewers marker
+    mkEl('line',{x1:sx(qEq),y1:sy(0),x2:sx(qEq),y2:sy(effectivePrice),stroke:'#f59e0b','stroke-width':'1.5','stroke-dasharray':'4,3'},root);
+    mkEl('line',{x1:sx(qEq),y1:sy(0),x2:sx(qEq),y2:sy(0)+8,stroke:'#b45309','stroke-width':'1.5'},root);
+    const avL=mkEl('text',{x:sx(qEq),y:sy(0)+(mobile?14:16),'text-anchor':'middle','font-size':mobile?'7.5':'9','font-family':'Georgia,serif','font-weight':'700','paint-order':'stroke',stroke:'white','stroke-width':'3','stroke-linejoin':'round',fill:'#b45309'},root);
+    const a1=document.createElementNS(NS,'tspan');a1.setAttribute('x',sx(qEq));a1.setAttribute('dy','0');a1.textContent='Actual';avL.appendChild(a1);
+    const a2=document.createElementNS(NS,'tspan');a2.setAttribute('x',sx(qEq));a2.setAttribute('dy',mobile?'10':'12');a2.textContent='Viewers';avL.appendChild(a2);
+  }
+
+  // MC line + Demand line + Effective price line
+  mkEl('line',{x1:sx(0),y1:sy(0),x2:sx(maxQ),y2:sy(0),stroke:'#10b981','stroke-width':'1.8','stroke-dasharray':'5,4'},root);
+  mkEl('line',{x1:sx(0),y1:sy(maxPrice),x2:sx(maxQ),y2:sy(0),stroke:'#1a1a1a','stroke-width':'2.5','stroke-linecap':'round'},root);
+  if(effectivePrice>0){
+    mkEl('line',{x1:sx(0),y1:sy(effectivePrice),x2:sx(maxQ),y2:sy(effectivePrice),stroke:'#dc2626','stroke-width':'1.8','stroke-dasharray':'6,4'},root);
+  }
+
+  // Axes
+  mkEl('line',{x1:sx(0),y1:sy(0),x2:sx(maxQ),y2:sy(0),stroke:'#1a1a1a','stroke-width':'1.5'},root);
+  mkEl('line',{x1:sx(0),y1:sy(0),x2:sx(0),y2:sy(maxPrice),stroke:'#1a1a1a','stroke-width':'1.5'},root);
+
+  // Y ticks
+  for(let i=0;i<=ticksY;i++){
+    const p=(i/ticksY)*maxPrice, yy=sy(p);
+    mkEl('line',{x1:sx(0),y1:yy,x2:sx(0)-5,y2:yy,stroke:'#1a1a1a','stroke-width':'1'},root);
+    mkTxt(`$${p.toFixed(0)}`,sx(0)-8,yy,{'text-anchor':'end','dominant-baseline':'middle','font-size':mobile?'8':'10','font-family':'Georgia,serif',fill:'#555'},root);
+  }
+
+  // maxQ tick + label
+  mkEl('line',{x1:sx(maxQ),y1:sy(0),x2:sx(maxQ),y2:sy(0)+8,stroke:'#1a1a1a','stroke-width':'1.5'},root);
+  mkTxt('Potential Viewers',sx(maxQ),sy(0)+(mobile?18:20),{'text-anchor':'middle','font-size':mobile?'7.5':'9','font-family':'Georgia,serif',fill:'#555','font-weight':'600'},root);
+
+  // Y axis label
+  const yL2=mkEl('text',{x:-(margin.top+h/2),y:mobile?12:16,'text-anchor':'middle','font-size':mobile?'9':'11','font-family':'Georgia,serif',fill:'#333','font-weight':'600',transform:'rotate(-90)'},root);
+  yL2.textContent='Price / Willingness to Pay ($)';
+
+  // ── All region labels last — so no polygon fill can obscure halos ─────
+  haloTxt('Viewer Welfare',clX((sx(0)+sx(qEq)+sx(0))/3),clY((sy(maxPrice)+sy(effectivePrice)+sy(effectivePrice))/3),{},root);
+
+  if(iDwlPoly&&maxQ-qEq>24){
+    haloTxt('Lost Ad Revenue',clX((sx(qEq)+sx(maxQ)+sx(qEq))/3),clY((sy(effectivePrice)+sy(0)+sy(0))/3),{},root);
+  }
+
+  if(iLarRect&&qEq>30&&effectivePrice>5){
+    haloTxt('Ad Revenue Realized',clX(sx(qEq/2)),clY(sy(effectivePrice/2)),{},root);
+  }
+
+  // MC label
+  {
+    const mcLabelX = clX(sx(maxQ*0.18));
+    haloTxt('MC ≈ $0',mcLabelX,clY(sy(0)-10),{fill:'#10b981',size:mobile?'9':'10',baseline:'auto'},root);
+  }
+
+  haloTxt('Demand',sx(maxQ)+5,sy(0)-2,{fill:'#1a1a1a',size:mobile?'9':'11',weight:'600',anchor:'start',baseline:'auto'},root);
+
+  if(effectivePrice>0){
+    haloTxt(`Effective Price: $${effectivePrice}`,clX(sx(maxQ)-4),clY(sy(effectivePrice)-9),{anchor:'end',fill:'#dc2626',size:mobile?'8':'10',baseline:'auto'},root);
+  }
+}
+
+function iUpdateMetrics(era){
+  const r=era.accessRate;
+  document.getElementById('iCsValue').textContent    = r>0.95?'High':r>0.75?'Medium':'Low';
+  const cd=((r-1)*100).toFixed(0);
+  document.getElementById('iCsChange').textContent   = cd>=0?'No change from 1967':`${cd}% vs. 1967`;
+  document.getElementById('iViewersValue').textContent= `${(r*100).toFixed(0)}%`;
+  document.getElementById('iViewersChange').textContent= cd>=0?'No change from 1967':`${cd}% vs. 1967`;
+  const dp=((1-r)*100).toFixed(0);
+  document.getElementById('iDwlValue').textContent   = dp<5?'Minimal':dp<20?'Moderate':'High';
+  document.getElementById('iDwlChange').textContent  = dp<5?'Nearly zero waste':`${dp}% of market locked out`;
+}
+
+function iUpdateEra(era){
+  document.getElementById('iEraTitle').textContent=era.title;
+  document.getElementById('iEraTitle').style.color=era.eraColor;
+  document.getElementById('iEraText').textContent=era.description;
+}
+
+let iYear=1967, iTimer=null;
+
+function iUpdate(year){
+  const era=iGetEra(year);
+  document.getElementById('iYearDisplay').textContent=year;
+  document.getElementById('iYearSlider').value=year;
+  iUpdateEra(era);
+  iRender(year);
+  iUpdateMetrics(era);
+}
+
+function iStartPlay(){
+  if(iTimer) return;
+  if(iYear>=2026) iYear=1967;
+  document.getElementById('iPlayIcon').innerHTML='<rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/>';
+  document.getElementById('iPlayLabel').textContent='Stop';
+  document.getElementById('iPlayBtn').classList.add('playing');
+  function tick(){
+    if(iYear>=2026){iStopPlay();return;}
+    iYear++;
+    iUpdate(iYear);
+    const d=iYear>=2010?1980:iYear>=2000?330:37;
+    iTimer=setTimeout(tick,d);
+  }
+  iTimer=setTimeout(tick,37);
+}
+
+function iStopPlay(){
+  clearTimeout(iTimer); iTimer=null;
+  document.getElementById('iPlayIcon').innerHTML='<polygon points="3,2 13,8 3,14"/>';
+  document.getElementById('iPlayLabel').textContent='Play';
+  document.getElementById('iPlayBtn').classList.remove('playing');
+}
+
+function initInteractive(){
+  iYear=1967;
+  iUpdate(1967);
+  document.getElementById('iYearSlider').addEventListener('input',e=>{
+    iHideTt(); iYear=+e.target.value; iUpdate(iYear);
+  });
+  document.getElementById('iPlayBtn').addEventListener('click',()=>iTimer?iStopPlay():iStartPlay());
+  let rTimer;
+  window.addEventListener('resize',()=>{ clearTimeout(rTimer); rTimer=setTimeout(()=>iRender(iYear),120); });
+  setTimeout(iStartPlay,600);
+}
+
+
+// ─────────────────────────────────────────────────
+// RESIZE — EXPLAINER
+// ─────────────────────────────────────────────────
+let expResizer;
+window.addEventListener('resize',()=>{
+  clearTimeout(expResizer);
+  expResizer=setTimeout(()=>{
+    if(document.getElementById('scene-explainer').style.display!=='none'){
+      drawExplainer();
+    }
+  },120);
+});
+
+
+// ─────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  buildDots();
+  drawExplainer();
+  renderStep(0);
+});
+</script>
+
+</html>

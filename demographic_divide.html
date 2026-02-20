@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Demographic Divide – hatched legend</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { color-scheme: light; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #fafaf8;
+      color: #1a1a1a;
+      line-height: 1.5;
+    }
+
+    #container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 16px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: clamp(1.25rem, 3.5vw, 1.85rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: clamp(0.78rem, 2vw, 0.95rem);
+      color: #555;
+      font-style: italic;
+      margin-top: -12px;
+    }
+
+    .section-title {
+      font-size: clamp(0.88rem, 2.4vw, 1.08rem);
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    .chart-wrap {
+      width: 100%;
+    }
+    .chart-wrap svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .insight-box {
+      background: #f1ede6;
+      border-left: 3px solid #1a1a1a;
+      padding: 11px 15px;
+    }
+
+    .insight-box h3 {
+      font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #1a1a1a;
+    }
+
+    .insight-box p {
+      font-size: clamp(0.74rem, 1.8vw, 0.83rem);
+      color: #555;
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    /* legend – updated .swatch-hatch now matches bar pattern exactly */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.78rem;
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-swatch {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* unified hatched swatch – exactly replicates bar lower segment */
+    .swatch-hatch {
+      background-color: #e6f9f3;
+      background-image: repeating-linear-gradient(
+        135deg,
+        rgba(16,185,129,0.38) 0px,
+        rgba(16,185,129,0.38) 6px,
+        rgba(16,185,129,0.0) 6px,
+        rgba(16,185,129,0.0) 12px
+      );
+      border: 2px solid rgba(16,185,129,0.55);
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    /* stat cards */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1.5px solid #e0d9d0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .stat-card {
+      padding: 14px 10px;
+      text-align: center;
+      background: #fff;
+      border-right: 1px solid #e0d9d0;
+      border-top: 3px solid #dc2626;
+    }
+    .stat-card:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 0.52rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #999;
+      margin-bottom: 5px;
+      font-family: 'Georgia', serif;
+      line-height: 1.3;
+    }
+
+    .stat-value {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      color: #dc2626;
+      line-height: 1;
+    }
+
+    .source {
+      font-size: 0.72rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    .divider { border: none; border-top: 1px solid #e0d9d0; }
+
+    @media (max-width: 600px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-card:nth-child(2) { border-right: none; }
+      .stat-card:nth-child(3) { border-right: 1px solid #e0d9d0; }
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+
+  <h1>The Demographic Divide</h1>
+  <p class="subtitle">How access barriers lock out the exact audiences advertisers want to reach</p>
+
+  <hr class="divider">
+
+  <!-- Chart 1 -->
+  <div>
+    <p class="section-title">Cable Access Rates by Age Group</p>
+    <div class="chart-wrap">
+      <svg id="accessChart" viewBox="0 0 860 340" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <!-- LEGEND: second swatch now uses .swatch-hatch (exact bar pattern) -->
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-swatch" style="background:#10b981;"></span>
+        <span>Have Cable Access</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch swatch-hatch"></span>
+        <span>Locked Out (No Cable)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>The Access Problem Gets Worse with Younger Demographics</h3>
+    <p>66% of viewers under 30 don't have cable access. These are exactly the demographics advertisers pay premiums to reach — young, digitally engaged consumers building brand loyalty. Yet two-thirds are locked out of watching the Super Bowl.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Chart 2 -->
+  <div>
+    <p class="section-title">Gen Z Faces a Double Barrier</p>
+    <div class="chart-wrap">
+      <svg id="doubleBarrierChart" viewBox="0 0 860 380" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-swatch" style="background:rgba(100,116,139,0.3);border:1.5px solid #64748b;"></span>
+        <span>Avid Sports Fans</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch" style="background:rgba(100,116,139,0.85);"></span>
+        <span>Have Cable Access</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>Interest vs. Access: Not the Same Problem</h3>
+    <p>Only 23% of Gen Z identify as "avid sports fans" (vs 42% of Millennials). But that's a separate issue from the 65% who are cord-cutters. Among Gen Z who CAN watch, viewership grew 20–24% year-over-year — proving that access, not interest, is the binding constraint.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Chart 3 -->
+  <div>
+    <p class="section-title">When They Can Access It, Young Viewers Watch</p>
+    <div class="chart-wrap">
+      <svg id="growthChart" viewBox="0 0 860 340" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>The Market Failure: Demand Exists, But Access Doesn't</h3>
+    <p>Female viewers 18–24 showed 24% year-over-year growth, and male viewers 18–24 showed 20% growth. This proves latent demand exists. The ~103 million locked-out viewers aren't uninterested — they're structurally excluded from the market.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Stat cards -->
+  <div>
+    <p class="section-title">The Advertiser Opportunity Cost</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Locked Out Viewers</div>
+        <div class="stat-value">103M</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Lost Ad Revenue / Game</div>
+        <div class="stat-value">$655M</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">CPM Overpremium Paid</div>
+        <div class="stat-value">82%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Gen Z Cord-Cutters</div>
+        <div class="stat-value">65%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <h3>Advertisers Pay More, Get Less</h3>
+    <p>Super Bowl advertisers pay ~$8M per 30-second spot to reach 125.6M viewers — a CPM of ~$6,369. In an efficient market with the full ~228M potential audience reachable, that same spend would yield a CPM of ~$3,503. Access barriers inflate the effective CPM by 82%, meaning advertisers overpay for every impression while ~$655M in reachable ad revenue simply ceases to exist.</p>
+  </div>
+
+  <p class="source">Note: Cable access figures from Zippia cord-cutting statistics, 2021–2022. Generational fan data from Emory University marketing study, 2022. Viewership growth from Sports Media Watch, February 2024. Locked-out viewer and advertiser loss figures are author estimates.</p>
+
+</div>
+
+<script>
+  // ── shared SVG helpers ────────────────────────────────────────────────
+  const NS = 'http://www.w3.org/2000/svg';
+
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+
+  // White‑halo label — same as C Surplus
+  function halo(text, x, y, opts, parent) {
+    const base = {
+      x, y,
+      'text-anchor':       opts.anchor   || 'middle',
+      'dominant-baseline': opts.baseline || 'middle',
+      'font-size':         opts.size     || '11',
+      'font-family':       'Georgia, serif',
+      'font-weight':       opts.weight   || '700',
+      'paint-order':       'stroke',
+      stroke:              'white',
+      'stroke-width':      '4',
+      'stroke-linejoin':   'round',
+      fill:                opts.fill     || '#1a1a1a',
+    };
+    const t = el('text', base, parent);
+    t.textContent = text;
+    return t;
+  }
+
+  function gridLine(x1, y1, x2, y2, parent) {
+    el('line', { x1, y1, x2, y2, stroke: '#e0d9d0', 'stroke-width': '1' }, parent);
+  }
+
+  function axisLine(x1, y1, x2, y2, parent) {
+    el('line', { x1, y1, x2, y2, stroke: '#1a1a1a', 'stroke-width': '1.5' }, parent);
+  }
+
+  // ── Chart 1: Cable Access Rates by Age ───────────────────────────────
+  function drawAccessChart() {
+    const svg = document.getElementById('accessChart');
+    const W = 860, H = 340;
+    const m = { top: 28, right: 30, bottom: 50, left: 58 };
+    const cW = W - m.left - m.right;
+    const cH = H - m.top - m.bottom;
+
+    svg.innerHTML = '';
+
+    const data = [
+      { label: 'Ages 18–29', hasAccess: 34, noAccess: 66 },
+      { label: 'Ages 30–49', hasAccess: 55, noAccess: 45 },
+      { label: 'Ages 50+',   hasAccess: 81, noAccess: 19 },
+    ];
+
+    const g = el('g', {}, svg);
+
+    // Polished diagonal stripe pattern
+    const defs = el('defs', {}, svg);
+
+    const pat = el('pattern', {
+      id: 'hatch', patternUnits: 'userSpaceOnUse',
+      width: '10', height: '10', patternTransform: 'rotate(45)'
+    }, defs);
+    el('rect', { width: '10', height: '10', fill: '#e6f9f3' }, pat);
+    el('rect', { x: '0', y: '0', width: '4', height: '10', fill: '#10b981', opacity: '0.28' }, pat);
+
+    const barW = Math.min(90, cW / data.length * 0.45);
+    const spacing = cW / data.length;
+
+    const yS = v => m.top + cH - (v / 100) * cH;
+    const xC = i => m.left + spacing * i + spacing / 2;
+
+    // Grid + y-axis ticks
+    for (let i = 0; i <= 5; i++) {
+      const v = i * 20;
+      const y = yS(v);
+      gridLine(m.left, y, W - m.right, y, g);
+      halo(`${v}%`, m.left - 10, y, { anchor: 'end', size: '10', weight: '400', fill: '#888' }, g);
+    }
+
+    // Axis
+    axisLine(m.left, m.top, m.left, m.top + cH, g);
+    axisLine(m.left, m.top + cH, W - m.right, m.top + cH, g);
+
+    data.forEach((d, i) => {
+      const cx = xC(i);
+      const bx = cx - barW / 2;
+
+      const noH  = (d.noAccess  / 100) * cH;
+      const hasH = (d.hasAccess / 100) * cH;
+
+      // Full bar clip
+      const clipId = `clip-fullbar-${i}`;
+      const clipPath = el('clipPath', { id: clipId }, defs);
+      el('rect', { x: bx, y: yS(100), width: barW, height: cH }, clipPath);
+
+      const fillG = el('g', { 'clip-path': `url(#${clipId})` }, g);
+
+      // Bottom segment: Locked out (pattern + solid undertone)
+      if (noH > 0) {
+        el('rect', { x: bx, y: yS(d.noAccess), width: barW, height: noH, fill: '#e6f9f3' }, fillG);
+        el('rect', { x: bx, y: yS(d.noAccess), width: barW, height: noH, fill: 'url(#hatch)' }, fillG);
+      }
+
+      // Top segment: Have access (solid)
+      if (hasH > 0) {
+        el('rect', { x: bx, y: yS(100), width: barW, height: hasH, fill: '#10b981' }, fillG);
+      }
+
+      // Outer outline (entire bar)
+      el('rect', {
+        x: bx, y: yS(100), width: barW, height: cH,
+        fill: 'none',
+        stroke: 'rgba(16,185,129,0.55)',
+        'stroke-width': '2',
+        'shape-rendering': 'geometricPrecision'
+      }, g);
+
+      // Labels
+      if (hasH > 22) halo(`${d.hasAccess}%`, cx, yS(100) + hasH / 2,
+        { size: '13', fill: '#1a1a1a' }, g);
+      if (noH > 22) halo(`${d.noAccess}%`, cx, yS(d.noAccess) + noH / 2,
+        { size: '13', fill: '#1a1a1a' }, g);
+
+      halo(d.label, cx, m.top + cH + 28, { size: '11', weight: '600', fill: '#1a1a1a' }, g);
+    });
+
+    // Y-axis label
+    const yLab = el('text', {
+      x: -(m.top + cH / 2), y: 14,
+      'text-anchor': 'middle', 'font-size': '10',
+      'font-family': 'Georgia, serif', fill: '#888',
+      transform: 'rotate(-90)'
+    }, g);
+    yLab.textContent = '% of Age Group';
+  }
+
+  // ── Chart 2: Double Barrier ──────────────────────────────────────────
+  function drawDoubleBarrierChart() {
+    const svg = document.getElementById('doubleBarrierChart');
+    const W = 860, H = 380;
+    const m = { top: 28, right: 160, bottom: 44, left: 92 };
+    const cW = W - m.left - m.right;
+    const cH = H - m.top - m.bottom;
+
+    svg.innerHTML = '';
+
+    const gens = [
+      { name: 'Gen Z',       interest: 23, access: 35, color: '#ef4444' },
+      { name: 'Millennials', interest: 42, access: 55, color: '#f59e0b' },
+      { name: 'Gen X',       interest: 33, access: 73, color: '#3b82f6' },
+      { name: 'Boomers',     interest: 31, access: 75, color: '#10b981' },
+    ];
+
+    const g = el('g', {}, svg);
+    const barH = 26, gap = 6;
+    const groupH = barH * 2 + gap;
+    const groupSpacing = cH / gens.length;
+
+    const xS = v => m.left + (v / 100) * cW;
+    const yG = i => m.top + groupSpacing * i + (groupSpacing - groupH) / 2;
+
+    // Grid + x-axis ticks
+    for (let i = 0; i <= 5; i++) {
+      const v = i * 20;
+      const x = xS(v);
+      gridLine(x, m.top, x, m.top + cH, g);
+      halo(`${v}%`, x, m.top + cH + 20, { size: '10', weight: '400', fill: '#888' }, g);
+    }
+
+    axisLine(m.left, m.top, m.left, m.top + cH, g);
+    axisLine(m.left, m.top + cH, W - m.right, m.top + cH, g);
+
+    gens.forEach((d, i) => {
+      const y0 = yG(i);
+
+      // Generation label (left)
+      halo(d.name, m.left - 10, y0 + groupH / 2,
+        { anchor: 'end', size: '12', weight: '700', fill: '#1a1a1a' }, g);
+
+      // Interest bar (lighter)
+      const iW = (d.interest / 100) * cW;
+      el('rect', { x: m.left, y: y0, width: iW, height: barH,
+        fill: d.color, opacity: '0.28' }, g);
+      el('rect', { x: m.left, y: y0, width: iW, height: barH,
+        fill: 'none', stroke: d.color, 'stroke-width': '1.5', opacity: '0.7' }, g);
+
+      halo(`${d.interest}%  avid fans`, xS(d.interest) + 8, y0 + barH / 2,
+        { anchor: 'start', size: '10', weight: '600', fill: d.color }, g);
+
+      // Access bar (solid)
+      const aW = (d.access / 100) * cW;
+      el('rect', { x: m.left, y: y0 + barH + gap, width: aW, height: barH,
+        fill: d.color, opacity: '0.82' }, g);
+
+      halo(`${d.access}%  have access`, xS(d.access) + 8, y0 + barH + gap + barH / 2,
+        { anchor: 'start', size: '10', weight: '600', fill: d.color }, g);
+    });
+  }
+
+  // ── Chart 3: Viewership Growth ───────────────────────────────────────
+  function drawGrowthChart() {
+    const svg = document.getElementById('growthChart');
+    const W = 860, H = 340;
+    const m = { top: 28, right: 90, bottom: 50, left: 110 };
+    const cW = W - m.left - m.right;
+    const cH = H - m.top - m.bottom;
+
+    svg.innerHTML = '';
+
+    const data = [
+      { label: 'Women 18–24', growth: 24, color: '#ec4899' },
+      { label: 'Men 18–24',   growth: 20, color: '#3b82f6' },
+      { label: 'Adults 55+',  growth:  8, color: '#10b981' },
+      { label: 'Women 25–54', growth:  6, color: '#f59e0b' },
+      { label: 'Men 25–54',   growth:  1, color: '#64748b' },
+    ];
+
+    const maxVal = 25;
+    const g = el('g', {}, svg);
+    const barH = Math.min(44, (cH / data.length) * 0.58);
+    const spacing = cH / data.length;
+
+    const xS = v => m.left + (v / maxVal) * cW;
+    const yC = i => m.top + spacing * i + (spacing - barH) / 2;
+
+    // Grid + x ticks
+    for (let i = 0; i <= 5; i++) {
+      const v = i * 5;
+      const x = xS(v);
+      gridLine(x, m.top, x, m.top + cH, g);
+      halo(`+${v}%`, x, m.top + cH + 20,
+        { size: '10', weight: '400', fill: '#888' }, g);
+    }
+
+    axisLine(m.left, m.top, m.left, m.top + cH, g);
+    axisLine(m.left, m.top + cH, m.left + cW, m.top + cH, g);
+
+    data.forEach((d, i) => {
+      const y = yC(i);
+      const bW = (d.growth / maxVal) * cW;
+
+      halo(d.label, m.left - 10, y + barH / 2,
+        { anchor: 'end', size: '11', weight: '600', fill: '#1a1a1a' }, g);
+
+      el('rect', { x: m.left, y, width: bW, height: barH,
+        fill: d.color, opacity: '0.82' }, g);
+
+      halo(`+${d.growth}%`, m.left + bW + 8, y + barH / 2,
+        { anchor: 'start', size: '12', weight: '700', fill: d.color }, g);
+    });
+
+    const xLab = el('text', {
+      x: m.left + cW / 2,
+      y: m.top + cH + 42,
+      'text-anchor': 'middle', 'font-size': '10',
+      'font-family': 'Georgia, serif', fill: '#888'
+    }, g);
+    xLab.textContent = 'Year-over-Year Viewership Growth (When They Have Access)';
+  }
+
+  drawAccessChart();
+  drawDoubleBarrierChart();
+  drawGrowthChart();
+</script>
+
+</html>
